@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+    <!--全局初始化参数 -->
+    <context-param>
+        <param-name>myParameter</param-name>
+        <param-value>hello,ServletContext</param-value>
+    </context-param>
+    <!--可以自己指定欢迎界面-->
+    <welcome-file-list>
+        <welcome-file>AdminLogin-New.jsp</welcome-file>
+    </welcome-file-list>
+
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+    <!-- 配置过滤器   -->
+    <filter>
+        <filter-name>CharacterFilter</filter-name>
+        <filter-class>com.Filter.CharacterFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CharacterFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>com.Filter.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- 配置监听器   -->
+    <listener>
+        <listener-class>com.Listener.OnlineUserListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>com.Listener.LoginUserListener</listener-class>
+    </listener>
+    <!--配置Servlet的访问路径-->
+    <servlet>
+        <servlet-name>Hello</servlet-name><!--上下servlet-name名字要一致-->
+        <servlet-class>com.Servlet.Day0809.LoginServlet</servlet-class> <!--拿到了这个类路径，我们可以通过反射实例化这个类-->
+       <!--设置Servlet的初始化参数-->
+        <init-param>
+           <param-name>MyServletParam</param-name>
+           <param-value>springconfig</param-value>
+       </init-param>
+        <!--
+            代表Servlet随容器的启动而启动
+            数值越小优先级越高
+        -->
+        <load-on-startup>3</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Hello</servlet-name>
+        <!--
+        Servlet的访问路径: 三种配置
+        1: 完全匹配     /IDEAWebProject_war_exploded
+        2: 目录匹配     /aaa/bbb/*
+        3: 扩展名匹配    *.do
+        注意: 三种匹配一定不能混用！！！！
+        -->
+        <url-pattern>/hello</url-pattern>
+    </servlet-mapping>
+</web-app>
